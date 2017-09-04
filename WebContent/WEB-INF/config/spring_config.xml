@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http\://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context-4.3.xsd
+     http://www.springframework.org/schema/mvc 
+     http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+     http://www.springframework.org/schema/security
+     http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+	<!-- default-autowire="byType" -->
+
+
+	<!-- 注解配置aop -->
+	<!-- <aop:aspectj-autoproxy /> -->
+	<context:property-placeholder
+		ignore-resource-not-found="true" location="classpath:/mysql_connection.properties" />
+
+	<!-- 引入配置文件 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:/mysql_connection.properties" />
+	</bean>
+
+	<!-- 配置数据源 -->
+	<context:component-scan base-package="com.nfi.ndms" />
+	<context:component-scan base-package="test.ndms" />
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
+		<property name="jdbcUrl" value="${c3p0.jdbcUrl}" />
+		<property name="user" value="${c3p0.user}" />
+		<property name="password" value="${c3p0.password}" />
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
+		<property name="maxIdleTime" value="${c3p0.maxIdleTime}" />
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
+		<property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}" />
+		<property name="acquireRetryAttempts" value="${c3p0.acquireRetryAttempts}" />
+	</bean>
+
+	<!-- spring-mvc 注解配置 -->
+	<mvc:annotation-driven />
+	<!-- 配置 MyBatis SqlSessionFactoryBean -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 置数据库链接源头 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 实体类应映射 -->
+		<property name="typeAliasesPackage" value="com.nfi.ndms.beans" />
+		<!--配置 Mapper 文件夹 -->
+		<property name="mapperLocations" value="classpath:/com/nfi/ndms/data/**/*.xml" />
+	</bean>
+
+	<!-- 以下设置对应两种开发模式，可以自行选用 Template或者使用MapperScannerConfigurer自行加载，然后使用注解配置dao -->
+	<!-- 设置 SqlSessionTemplate -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- dao 接口所在包名，Spring 会自动查找其下的类 ,包下的类需要使用 @MapperScan 注解,否则容器注入会失败 从此 MapperBean 
+		不需要再在此文件中显示的定义，Spring 会自动查找 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.nfi.ndms.data.*" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+	<!-- 事务管理 -->
+	<!-- <import resource="classpath:spring_transaction.xml" /> -->
+	<!-- 配置事务管理器 -->
+	<!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
+		<property name="dataSource" ref="dataSource" /> </bean> -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+
+	<!-- 自定义 beans 开始 -->
+
+	<!-- Tung beans -->
+	
+
+	<!-- Wung beans -->
+
+	<!-- Power beans -->
+
+	<!-- Yu beans -->
+	<bean id="supplierDao" class="com.nfi.ndms.dao.SupplierDao">
+		<property name="sqlSessionTemplate" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="goodsDao" class="com.nfi.ndms.dao.GoodsDao">
+		<property name="sqlSessionTemplate" ref="sqlSession"></property>
+	</bean>
+	
+   	<bean id="orderDao" class="com.nfi.ndms.dao.OrderDao">
+		<property name="sqlSessionTemplate" ref="sqlSession"></property>
+	</bean>
+
+	<!-- Wave beans -->
+
+	<!-- 自定义beans 结束 -->
+	<!-- AOP 开始 -->
+
+	<!-- Tung AOP -->
+
+	<!-- Wung AOP -->
+
+	<!-- Power AOP -->
+
+	<!-- Yu AOP -->
+
+	<!-- Wave AOP -->
+
+	<!-- AOP 结束 -->
+
+	<!-- 其它配置 -->
+	<!-- 配置文件上传，如果没有使用文件上传可以不用配置，当然如果不配，那么配置文件中也不必引入上传组件包 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 默认编码 -->
+		<property name="defaultEncoding" value="utf-8" />
+		<!-- 文件大小最大值 -->
+		<property name="maxUploadSize" value="10485760000" />
+		<!-- 内存中的最大值 -->
+		<property name="maxInMemorySize" value="40960" />
+	</bean>
+
+</beans>

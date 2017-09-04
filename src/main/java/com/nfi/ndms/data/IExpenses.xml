@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nfi.ndms.data.IExpenses">
+	<resultMap type="Expenses" id="Ex">
+		<id property="expensesId" column="expensesId" javaType="java.lang.Integer" />		
+		<result property="correct" column="correct" javaType="java.lang.String" />
+		<result property="date" column="date" javaType="java.sql.Date" />
+		<result property="name" column="name" javaType="java.lang.String" />
+		<result property="money" column="money" javaType="java.lang.Double" />
+		<result property="type" column="type" javaType="java.lang.String" />
+		<result property="remake" column="remake" javaType="java.lang.String" />
+	</resultMap>
+
+	<!-- resultMap 命名引用外部的 resultMap。返回的是一个集合。 -->	
+	<select id="getExpenses"  resultMap="Ex">
+		select * from expenses where date &gt;= #{date1} and date &lt;= #{date2}
+			<if test = "type != null and type != ''">
+				and type like "%"#{type}"%"
+			</if>		
+	</select>
+	
+	<insert id="addExpenses"  useGeneratedKeys="true" keyProperty="expensesId">
+		insert into expenses (date,type,money,name,remake,correct) 
+		values(#{date},#{type},#{money},#{name},#{remake},#{correct})
+	</insert>
+	
+	<select id="getIncome"  resultMap="Ex">
+		select * from income where `date` &gt;= #{date1} and `date` &lt;= #{date2}		
+			<if test = "type != null and type != ''">
+				and type like "%"#{type}"%"
+			</if>		
+	</select>	
+	
+	<insert id="addIncome"  useGeneratedKeys="true" keyProperty="expensesId">
+		insert into income (date,type,money,name,remake,correct) 
+		values(#{date},#{type},#{money},#{name},#{remake},#{correct})
+	</insert>
+
+</mapper>

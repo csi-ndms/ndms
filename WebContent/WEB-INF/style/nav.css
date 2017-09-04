@@ -1,0 +1,99 @@
+/* 全局样式 */
+
+/* 统一 Chrome 中的表现 */
+#navbar-container>nav,#navbar-container div.brand {
+    height: 80px;
+}
+
+/* 初始化样式 */
+#nav-container #sidebar-toggle {
+    padding: 24px 0;
+    margin: 0px;
+}
+
+#sidebar-toggle .lnr-arrow-right-circle {
+    color: white;
+}
+
+#navbar-container div.brand {
+    padding-left: 43px;
+}
+
+
+/* 默认配置开始 */
+#nav-container.style-elegant-blue nav.navbar-fixed-top {
+    background-color: #6a8296;
+}
+
+/*侧边栏显示开关*/
+
+.layout-fullwidth #nav-container.style-elegant-blue #sidevar-toggle {
+    color: #58E734;
+}
+
+#nav-container.style-elegant-blue div.brand,#sidebar-toggle {
+    background-color: #D2D2D2
+}
+
+#nav-container.style-elegant-blue .navbar-btn {
+    color: beige;
+}
+
+
+#nav-container.style-elegant-blue .navbar-default .navbar-nav>li>a {
+    color:#fcf8e3;
+}
+
+
+#nav-container.style-elegant-blue {
+    color: #6b656a;
+}
+
+/*侧边栏*/
+
+/* 背景色 */
+#nav-container.style-elegant-blue .sidebar {
+    background-color: #D2D2D2;
+}
+
+/* 链接文字 */
+#nav-container.style-elegant-blue .nav > li > a {
+    color: black;
+}
+
+#nav-container.style-elegant-blue .nav > li > a:hover,#nav-container.style-elegant-blue .sidebar .nav > li > a:focus,#nav-container.style-elegant-blue .sidebar .nav > li > a.active {
+    color: #b03d3d;
+}
+
+/* 激活侧边栏样式 */
+
+.sidebar .nav > li > a:focus, .sidebar .nav > li > a.active {
+    background-color: #ccc;
+    border-left-color: #456D81;
+}
+
+#nav-container.style-elegant-blue div.collapse.in ul {
+    background-color: #D3D3D3;
+}
+
+/*浅蓝色主题*/
+
+#nav-container.style-light-blue nav.navbar-fixed-top {
+    background-color: #4aa4f0;
+}
+
+
+/* 默认配置结束 */
+/*黑色主题*/
+.navbar-black {
+
+}
+
+/*玫瑰红主题*/
+.navbar-pinkRed {
+    background-color: #c77070；
+}
+
+#wrapper .pinkRed {
+    color: #734669
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nfi.ndms.data.SupplierMapper">
+
+	<resultMap type="Supplier" id="supplierBean">
+		<id property="supplierId" column="supplier_id" javaType="java.lang.Integer" />
+		<result property="supplierName" column="supplier_name" javaType="java.lang.String" />
+		<result property="address" column="address" javaType="java.lang.String" />
+		<result property="linkman" column="linkman" javaType="java.lang.String" />
+		<result property="phone" column="phone" javaType="java.lang.String" />
+	</resultMap>
+
+	<!-- resultMap 命名引用外部的 resultMap。返回的是一个集合。 -->
+	
+	<select id="selectSupplierByOrder" resultMap="supplierBean">
+		select supplier.* from supplier inner join orders on supplier.supplier_id = orders.supplier_id where orders.id = #{id}
+	</select>
+	
+	<insert id="addSupplier">
+		insert into supplier (supplier_name,address,linkman,phone) values (#{supplierName},#{address},#{linkman},#{phone})
+	</insert>
+	
+	<select id="getAllSupplier" resultMap="supplierBean">
+		select * from supplier
+	</select>
+
+</mapper>

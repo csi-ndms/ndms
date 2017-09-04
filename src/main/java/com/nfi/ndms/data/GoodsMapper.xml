@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nfi.ndms.data.GoodsMapper">
+
+	<resultMap type="Goods" id="goodsBean">
+		<id property="id" column="id" javaType="java.lang.Integer"/>
+		<result property="goodsId" column="goods_id" javaType="java.lang.String" />
+		<result property="goodsName" column="goods_name" javaType="java.lang.String" />
+		<result property="goodsType" column="goods_typeId" javaType="java.lang.String" />
+		<result property="unitType" column="unit_type" javaType="java.lang.String" />
+		<result property="price" column="price" javaType="java.lang.Double" />
+		<result property="approval" column="approval_number" javaType="java.lang.String" />
+	</resultMap>
+
+	<!-- resultMap 命名引用外部的 resultMap。返回的是一个集合。 -->
+	
+	<insert id="addGoods">
+		insert into goods (goods_id,goods_name,goods_typeId,unit_type,price,approval_number) values (#{goodsId},#{goodsName},#{goodsType},#{unitType},#{price},#{approval})
+	</insert>
+	
+	<select id="getGoodsById" resultMap="goodsBean">
+		select * from goods where goods_id = #{goodId}
+	</select>
+	
+	<select id="getAllGoods" resultMap="goodsBean">
+		select * from goods
+	</select>
+	
+	<update id="updateGoods">
+		update goods set goods_id = #{goodId},goods_name = #{goodsName},goods_typeId=#{goodsTypeId},
+			unit_type=#{unitType},price=#{price},approval_number=#{approval}
+	</update>
+	
+	<delete id="deleteGoods">
+		delete from goods where id = #{id}
+	</delete>
+
+</mapper>

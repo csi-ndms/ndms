@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nfi.ndms.data.OrderMapper">
+
+	<resultMap type="Order" id="orderBean">
+		<id property="id" column="id" javaType="java.lang.Integer"/>
+		<result property="goodsId" column="goods_id" javaType="java.lang.String" />
+		<result property="goodsName" column="goods_name" javaType="java.lang.String" />
+		<result property="unitPrice" column="unit_price" javaType="java.lang.Double" />
+		<result property="amount" column="amount" javaType="java.lang.Integer" />
+		<result property="unitType" column="unit_type" javaType="java.lang.String" />
+		<result property="total" column="total" javaType="java.lang.Double" />
+		<result property="supplierId" column="supplier_id" javaType="java.lang.Integer" />
+		<result property="storeHouse" column="store_house" javaType="java.lang.String" />
+		<result property="orderTime" column="order_time" javaType="java.sql.Date" />
+		<result property="receiptTime" column="receipt_time" javaType="java.sql.Date" />
+		<result property="orderPeople" column="order_people" javaType="java.lang.String" />
+		<result property="auditTime" column="audit_time" javaType="java.sql.Date" />
+		<result property="auditor" column="auditor" javaType="java.lang.String" />
+		<result property="status" column="status" javaType="java.lang.String" />
+		<result property="remark" column="remark" javaType="java.lang.String" />
+		<association property="supplier" column="id" select="com.nfi.ndms.data.SupplierMapper.selectSupplierByOrder"></association>
+	</resultMap>
+
+	<!-- resultMap 命名引用外部的 resultMap。返回的是一个集合。 -->
+	<insert id="addOrder">
+		insert into orders (goods_id,goods_name,unit_price,amount,unit_type,total,supplier_id,
+		order_time,receipt_time,store_house,order_people,audit_time,auditor,status,remark) values
+		 (#{goodsId},#{goodsName},#{unitPrice},#{amount},#{unitType},#{total},
+			#{supplierId},#{orderTime},#{receiptTime},#{storeHouse},#{orderPeople},#{auditTime},
+			#{auditor},#{status},#{remark})
+	</insert>
+	
+	<select id="getAllOrder" resultMap="orderBean">
+		select * from orders
+	</select>
+	
+	<select id="getOrderByStatus" resultMap="orderBean">
+		select * from orders where status = #{status}
+	</select>
+	
+	<update id="updateOrder">
+		update orders set auditor = #{auditor},status=#{status},remark=#{remark} where id = #{id}
+	</update>
+	
+	<select id="getOrderById" resultMap="orderBean">
+		select * from orders where id = #{id}
+	</select>
+	
+	<select id="getOrderByWhere" resultMap="orderBean">
+		select * from orders 
+		<where>
+			<if test="goodsName != null and goodsName!=''">
+				goods_name = #{goodsName}
+			</if>
+			<if test="orderPeople != null and orderPeople!=''">
+				and order_people = #{orderPeople}
+			</if>
+			<if test="auditor != null and auditor!=''">
+				and auditor = #{auditor}
+			</if>
+		</where>
+	</select>
+</mapper>

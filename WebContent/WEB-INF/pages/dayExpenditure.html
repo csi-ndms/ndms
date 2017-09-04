@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="zh-cn">
+
+<head>
+<title>Notifications | Klorofil - Free Bootstrap Dashboard
+	Template</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<!-- VENDOR CSS -->
+<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="vendor/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="vendor/linearicons/style.css">
+<link rel="stylesheet" href="vendor/toastr/toastr.min.css">
+<!-- MAIN CSS -->
+<link rel="stylesheet" href="vendor/main.css">
+<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+<link rel="stylesheet" href="vendor/demo.css">
+<!-- GOOGLE FONTS -->
+<link
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700"
+	rel="stylesheet">
+<!-- ICONS -->
+
+<script type="text/javascript" src="vendor/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="vendor/calendar/lhgcore.js"></script>
+<script type="text/javascript" src="vendor/calendar/date.js"></script>
+<script type="text/javascript">
+	function order()
+	{		
+		if($("#input1").val() != "" && $("#input1").val() != null &&
+		   $("#input2").val() != "" && $("#input2").val() != null &&
+		   $("#input3").val() != "" && $("#input3").val() != null &&
+		   $("#input4").val() != "" && $("#input4").val() != null &&
+		   $("#input5").val() != "" && $("#input5").val() != null ){
+			$("#form1").submit();
+		}
+	}
+	var date = new Date();
+	var seperator1 = "-";
+	var seperator2 = ":";
+	var month = date.getMonth() + 1;
+	var strDate = date.getDate();
+	if (month >= 1 && month <= 9) {
+	    month = "0" + month;
+	}
+	if (strDate >= 0 && strDate <= 9) {
+	    strDate = "0" + strDate;
+	}
+	var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+	$().ready(function(){
+		$.get("getExpenses",{date1:currentdate,date2:currentdate},res)
+	})
+	
+	function res(data,status)
+	{
+		if(status=="success"){
+			var exs = JSON.parse(data);
+			var exsTable = document.getElementById("thead");
+			exsTable.innerHTML = "";
+			var exsTbody = document.getElementById("tbody");
+			exsTbody.innerHTML = "";
+			var row = document.createElement("tr");
+			var col = document.createElement("th");
+			col.appendChild(document.createTextNode("编号"));
+			row.appendChild(col);
+			
+			col = document.createElement("th");
+			col.appendChild(document.createTextNode("日期"));
+			row.appendChild(col);
+			
+			col = document.createElement("th");
+			col.appendChild(document.createTextNode("支出类型"));
+			row.appendChild(col);
+			
+			col = document.createElement("th");
+			col.appendChild(document.createTextNode("修正金额"));
+			row.appendChild(col);
+			
+			col = document.createElement("th");
+			col.appendChild(document.createTextNode("备注"));
+			row.appendChild(col);
+			
+			col = document.createElement("th");
+			col.appendChild(document.createTextNode("金额￥"));
+			row.appendChild(col);
+			
+			col = document.createElement("th");
+			col.appendChild(document.createTextNode("处理人"));
+			row.appendChild(col);
+			
+			exsTable.appendChild(row);
+			
+			for (var i = 0; i < exs.length; i++)
+			{
+				row = document.createElement("tr");
+				col = document.createElement("td");
+				col.appendChild(document.createTextNode(exs[i].expensesId));
+				row.appendChild(col);
+				
+				col = document.createElement("td");
+				col.appendChild(document.createTextNode(exs[i].date));
+				row.appendChild(col);
+				
+				col = document.createElement("td");
+				col.appendChild(document.createTextNode(exs[i].type));
+				row.appendChild(col);
+				
+				col = document.createElement("td");
+				col.appendChild(document.createTextNode(exs[i].correct));
+				row.appendChild(col);
+				
+				col = document.createElement("td");
+				col.appendChild(document.createTextNode(exs[i].remake));
+				row.appendChild(col);
+				
+				col = document.createElement("td");
+				col.appendChild(document.createTextNode(exs[i].money));
+				row.appendChild(col);
+				
+				col = document.createElement("td");
+				col.appendChild(document.createTextNode(exs[i].name));
+				row.appendChild(col);
+								
+				exsTbody.appendChild(row);
+			}	
+		}
+	}
+</script>
+</head>
+
+<body>
+	<!-- WRAPPER -->
+	<div id="wrapper">
+		<!-- NAVBAR -->
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="brand">
+				<a href="index.html"><img src="img/logo-dark.png"
+					alt="Klorofil Logo" class="img-responsive logo"></a>
+			</div>
+			<div class="container-fluid">
+				<div class="navbar-btn">
+					<button type="button" class="btn-toggle-fullwidth">
+						<i class="lnr lnr-arrow-left-circle"></i>
+					</button>
+				</div>
+				<form class="navbar-form navbar-left">
+					<div class="input-group">
+						<input type="text" value="" class="form-control"
+							placeholder="Search dashboard..."> <span
+							class="input-group-btn"><button type="button"
+								class="btn btn-primary">Go</button></span>
+					</div>
+				</form>
+				<div class="navbar-btn navbar-btn-right">
+					<a class="btn btn-success update-pro"
+						href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro"
+						title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i>
+						<span>UPGRADE TO PRO</span></a>
+				</div>
+				<div id="navbar-menu">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown"><a href="#"
+							class="dropdown-toggle icon-menu" data-toggle="dropdown"> <i
+								class="lnr lnr-alarm"></i> <span class="badge bg-danger">5</span>
+						</a>
+							<ul class="dropdown-menu notifications">
+								<li><a href="#" class="notification-item"><span
+										class="dot bg-warning"></span>System space is almost full</a></li>
+								<li><a href="#" class="notification-item"><span
+										class="dot bg-danger"></span>You have 9 unfinished tasks</a></li>
+								<li><a href="#" class="notification-item"><span
+										class="dot bg-success"></span>Monthly report is available</a></li>
+								<li><a href="#" class="notification-item"><span
+										class="dot bg-warning"></span>Weekly meeting in 1 hour</a></li>
+								<li><a href="#" class="notification-item"><span
+										class="dot bg-success"></span>Your request has been approved</a></li>
+								<li><a href="#" class="more">See all notifications</a></li>
+							</ul></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"><i class="lnr lnr-question-circle"></i>
+								<span>Help</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Basic Use</a></li>
+								<li><a href="#">Working With Data</a></li>
+								<li><a href="#">Security</a></li>
+								<li><a href="#">Troubleshooting</a></li>
+							</ul></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"><img src="img/user.png"
+								class="img-circle" alt="Avatar"> <span>Samuel</span> <i
+								class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<ul class="dropdown-menu">
+								<li><a href="#"><i class="lnr lnr-user"></i> <span>My
+											Profile</span></a></li>
+								<li><a href="#"><i class="lnr lnr-envelope"></i> <span>Message</span></a></li>
+								<li><a href="#"><i class="lnr lnr-cog"></i> <span>Settings</span></a></li>
+								<li><a href="#"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
+							</ul></li>
+						<!-- <li>
+							<a class="update-pro" href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro" title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i> <span>UPGRADE TO PRO</span></a>
+						</li> -->
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<!-- END NAVBAR -->
+		<!-- LEFT SIDEBAR -->
+		<div id="sidebar-nav" class="sidebar">
+			<div class="sidebar-scroll">
+				<nav>
+					<ul class="nav">
+						<li :class="{'active':isHomeActive}"><a href="index.html"
+							class="active" :class=""><i class="lnr lnr-home"></i> <span>主页</span></a></li>
+						<li :class="{'active':isWHActive}" v-if="isWHStaff"><a
+							href="#warehouse-sub-pages" data-toggle="collapse"
+							class="collapsed"><i class="fa fa-cubes"></i><span>仓储</span><i
+								class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<div id="warehouse-sub-pages" class="collapse">
+								<ul class="nav">
+									<li><a href="page-profile.html" class=""><i
+											class="fa fa-cube"></i><span>仓储管理</span></a></li>
+									<li><a href="page-login.html" class=""><i
+											class="fa fa-plus"></i><span>采购入库</span></a></li>
+									<li><a href="page-lockscreen.html" class=""><i
+											class="fa fa-sign-out"></i><span>出库</span></a></li>
+									<li><a href="page-lockscreen.html" class=""><i
+											class="fa fa-thermometer-empty" aria-hidden="true"></i><span>即将过期</span></a></li>
+									<li><a href="panels.html" class=""><i
+											class="fa fa-line-chart"></i> <span>统计数据</span></a></li>
+								</ul>
+							</div></li>
+						<li :class="{'active':isSaleActive}" v-if="isSaleStaff"><a
+							href="#sale-sub-pages" data-toggle="collapse" class="collapsed"><i
+								class="fa fa-jpy"></i><span>销售</span><i
+								class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<div id="sale-sub-pages" class="collapse">
+								<ul class="nav">
+									<li><a href="page-profile.html" class=""><i
+											class="fa fa-barcode" aria-hidden="true"></i><span>订单</span></a></li>
+									<li><a href="page-login.html" class=""><i
+											class="fa fa-address-card" aria-hidden="true"></i><span>会员信息</span></a></li>
+									<li><a href="page-lockscreen.html" class=""><i
+											class="fa fa-quora"></i><span>查询</span></a></li>
+									<li><a href="panels.html" class=""><i
+											class="fa fa-line-chart"></i> <span>统计数据</span></a></li>
+								</ul>
+							</div></li>
+						<li :class="{'active':isFinActive}" v-if="isFinStaf"><a
+							href="#finance-sub-pages" data-toggle="collapse"
+							class="collapsed"><i class="fa fa-diamond"></i><span>财务</span><i
+								class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<div id="finance-sub-pages" class="collapse">
+								<ul class="nav">
+									<li><a href="toAddExpenses" class=""><i
+											class="fa fa-plus-square"></i><span>收入</span></a></li>
+									<li><a href="page-login.html" class=""><i
+											class="fa fa-minus-square"></i><span>支出</span></a></li>
+									<li><a href="elements.html" class=""><i
+											class="fa fa fa-truck"></i> <span>进货单审核</span></a></li>
+									<li><a href="page-lockscreen.html" class=""><i
+											class="fa fa-quora"></i><span>查询</span></a></li>
+									<li><a href="panels.html" class=""><i
+											class="fa fa-line-chart"></i> <span>统计数据</span></a></li>
+								</ul>
+							</div></li>
+						<li :class="{'active':isPurActive}" v-if="isPurStaf"><a
+							href="elements.html" class=""><i class="fa fa fa-truck"></i>
+								<span>采购</span></a></li>
+						<li :class="{'active':isStafActive}" v-if="isStafMangr"><a
+							href="charts.html" class=""><i class="fa fa fa-users"></i> <span>用户管理</span></a></li>
+						<li :class="{'active':isBossActive}" v-if="isBoss"><a
+							href="panels.html" class=""><i class="fa fa-line-chart"></i>
+								<span>统计数据</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<!-- END LEFT SIDEBAR -->
+		<!-- MAIN -->
+		<div class="main">
+			<!-- MAIN CONTENT -->
+			
+			<div style="margin-left:200px">
+				<div style="width: 660px; background-color: #ffffff">
+				<div style="height:20px"></div>
+					<div style="margin-left: 200px; width: 300px">
+						<h3>支出记账</h3>
+						<form action="addExpenses" method="get" id="form1">
+							<table>
+								<tr>
+									<td>日期：</td>
+									<td><input type="text" name="date" id="input1"
+										onclick="J.calendar.get()" class="form-control"></td>
+								</tr>
+								<tr>
+									<td>支出类型:</td>
+									<td><input type="text" name="type" id="input2"
+										class="form-control"></td>
+								</tr>
+								<tr>
+									<td>金额:</td>
+									<td><input type="text" name="money" id="input3"
+										class="form-control"></td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value="更正" name="correct"></td>
+									<td>修正金额</td>
+								</tr>
+								<tr>
+									<td>备注：</td>
+									<td><input type="text" name="remake" id="input4"
+										class="form-control"></td>
+								</tr>
+								<tr>
+									<td>处理人员</td>
+									<td><input type="text" name="name" id="input5"
+										class="form-control"></td>
+								</tr>
+							</table>
+							<div style="margin-top: 10px"></div>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="button" value="提交" onclick="order()"
+								class="btn btn-primary" class="form-control">
+						</form>
+						<div style="height:20px"></div>
+					</div>
+				</div>
+				<p style="height: 10px; width: 660px"></p>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel" style="width:660px">
+							<div class="panel-heading" >
+								<h3 class="panel-title">今日记录</h3>
+							</div>
+							<div class="panel-body">
+								<table id="table1" class="table table-striped">
+									<thead id="thead"></thead>
+									<tbody id="tbody"></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- END MAIN -->
+			<div class="clearfix"></div>
+			<footer>
+				<div class="container-fluid">
+					<p class="copyright">
+						&copy; 2017 <a href="#" target="_blank">Theme I Need</a>. All
+						Rights Reserved. More Templates <a href="http://www.cssmoban.com/"
+							target="_blank" title="模板之家">模板之家</a> - Collect from <a
+							href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
+					</p>
+				</div>
+			</footer>
+		</div>
+		<!-- END WRAPPER -->
+		<!-- Javascript -->
+		<script src="vendor/jquery/jquery.min.js"></script>
+		<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+		<script src="vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+		<script src="vendor/toastr/toastr.min.js"></script>
+		<script src="vendor/klorofil-common.js"></script>
+</body>
+
+</html>
